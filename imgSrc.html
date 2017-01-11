@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>JS逐帧动画</title>
+	<style type="text/css">
+	html,body { margin: 0; }
+	.wrap { width: 800px; margin: 20px auto; }
+	.monkey { margin: 100px; }
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<img class="monkey" />
+	</div>
+
+
+	<script type="text/javascript" src="js/zepto.min.js"></script>
+	<script type="text/javascript">
+		(function(){
+			var ts = null, tn = 0, num = 6, fps = 30;			
+
+			function tick(){
+				tn++;
+				if(tn<=num){
+					requestAnimationFrame(tick);
+					$('.monkey').attr('src', 'images/m'+tn+'.png');
+				}else{
+					return;
+				}
+			}
+
+			tick();
+
+			window.requestAnimationFrame = (function(callback){
+	        return window.requestAnimationFrame ||
+	        window.webkitRequestAnimationFrame ||
+	        window.mozRequestAnimationFrame ||
+	        window.oRequestAnimationFrame ||
+	        window.msRequestAnimationFrame ||
+	        function( callback ){
+	        window.setTimeout(callback, 1000 / fps); //如果requestAnimFrame支持不可用，还是可以用回内置的setTimeout。
+	        };
+	        })();
+		}())
+	</script>
+</body>
+</html>

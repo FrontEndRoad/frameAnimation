@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Canvas 逐帧动画</title>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<script>
+    var canvas = null;//初始化参数
+    var img = null;
+    var ctx = null;
+    var wid = 129;
+    var hei = 127;
+
+    window.onload = function() {
+        var canvas = document.getElementById("canvas");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        if (!canvas.getContext) {
+            console.log("浏览器不支持canvas");
+            return;
+        }    
+        ctx = canvas.getContext("2d");
+        ctx.fillStyle="#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        img = new Image();
+        img.src = "images/m1.png";
+        img.onload = function(){
+            update();
+        };
+    }  
+
+
+    //绘制图片
+    function redraw() {
+        ctx.fillStyle="#ffffff";
+        ctx.fillRect(0, 0, 460, 460);
+        ctx.drawImage(img, 100, 100, wid, hei);
+    }    
+
+    
+    //动画   
+    var frame = 1;
+    var lastUpdateTime = 0;
+    var acDelta = 0;
+    var msPerFrame = 60;
+    function update() {
+        var delta = Date.now() - lastUpdateTime;
+        if (acDelta > msPerFrame){
+            acDelta = 0;
+            frame++; 
+            if (frame >= 6){
+                //设置循环
+                //frame = 1; 
+            }else{
+                redraw();
+                img.src='images/m'+frame+'.png';
+            }
+        } else {
+            acDelta += delta;        
+        }
+        lastUpdateTime = Date.now();
+
+        //循环
+        requestAnimFrame(update);
+    }
+
+    window.requestAnimFrame = (function(){
+    return window.requestAnimationFrame ||
+    window.webkitRequestAnimationFrame ||
+    window.mozRequestAnimationFrame ||
+    window.oRequestAnimationFrame ||
+    window.msRequestAnimationFrame ||
+    function( callback ){
+    window.setTimeout(callback, 1000 / 3); //如果requestAnimFrame支持不可用，还是可以用回内置的setTimeout。
+    };
+    })();
+</script>
+</body>
+</html>

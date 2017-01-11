@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<title>css3帧动画keyframes</title>
+	<style type="text/css">
+	html,body { margin: 0; }
+	.wrap { width: 800px; margin: 20px auto; }
+	.monkey { width: 129px; height: 127px; background: url(images/monkey.png) no-repeat 0 0; }
+
+	.monAni { -webkit-animation: monAni .6s steps(6); animation: monAni .6s steps(6); }
+	@-webkit-keyframes monAni {
+		0% { background-position: 0 0; }
+		100% { background-position: -812px 0; }
+	}
+	@keyframes monAni {
+		0% { background-position: 0 0; }
+		100% { background-position: -812px 0; }
+	}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="monkey monAni"></div>
+	</div>
+
+
+	<script type="text/javascript" src="js/zepto.min.js"></script>
+	<script type="text/javascript">
+		$('.monkey').on('webkitAnimationFrame animationFrame', function(){
+			$(this).css({backgroundPosition: 'right top'});
+		})
+	</script>
+</body>
+</html>
